@@ -222,11 +222,12 @@ impl Store for FileStore {
 fn initCheckSessionsTable(conn: &Armconn) {
     conn.lock().unwrap().execute(
         "CREATE TABLE IF NOT EXISTS cbox.session (
-session          STRING  NOT NULL PRIMARY KEY,
 botID    	     UUID,
+session          STRING,
 sessionValue     BYTES,
 createdAt        TIMESTAMP Default  now(),
 updatedAt        TIMESTAMP Default  now(),
+PRIMARY KEY      (session, botID),
 INDEX 		     botID_idx (botID)
 ) ;",&[],
     ).unwrap();
@@ -235,11 +236,12 @@ INDEX 		     botID_idx (botID)
 fn initCheckPrekeysTable(conn: &Armconn) {
     conn.lock().unwrap().execute(
         "CREATE TABLE IF NOT EXISTS cbox.prekey (
-prekey      INT NOT NULL PRIMARY KEY,
 botID    	UUID,
+prekey      INT,
 prekeyValue BYTES,
 createdAt   TIMESTAMP Default  now(),
 updatedAt   TIMESTAMP Default  now(),
+PRIMARY KEY (prekey, botID),
 INDEX 		botID_idx (botID)
 ) ;",&[],
     ).unwrap();
